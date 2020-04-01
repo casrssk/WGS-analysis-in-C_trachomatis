@@ -1,0 +1,30 @@
+module_order:
+    - indel_eff:
+        name: 'indel_eff (snpEff)'
+        target: ''
+        path_filters:
+            - 'results/snpeff/indels.csv'
+    - snp_eff:
+        name: 'snp_eff (snpEff)'
+        target: ''
+        path_filters:
+            - 'results/snpeff/snps.csv'
+    - validate_bam:
+        name: 'validate_bam (qualimap)'
+        target: ''
+        path_filters:
+            - 'results/mapping/dedup/*_stats/qualimapReport.html'
+    - mark_duplicates:
+        name: 'mark_duplicates (Picard)'
+        target: ''
+        path_filters:
+            - 'results/mapping/dedup/*.metrics.txt'
+    - fastqc:
+        name: 'FastQC (normalized by BBnorm)'
+        target: ''
+        path_filters:
+            - 'results/fastqc2/*_fastqc.html'
+    - fastqc:
+        name: 'FastQC (raw reads)'
+        path_filters:
+            - 'results/fastqc1/*_fastqc.html'

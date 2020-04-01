@@ -1,0 +1,16 @@
+working_dir: "../mac/samples/"
+
+Duplicates: "REMOVE_DUPLICATES=true"
+
+addorreplacgroups: "RGID=000000000-CT298 RGLB=M02885 RGPL=illumina RGPU={sample} RGSM={sample}"
+
+multiqc_params: "--config rules/multiqc_config.yaml -d"
+
+#0-false 1-true
+normalization: 1
+
+#file name alias
+#191112_19-10127_CTD_2-Capt_S34_L000_1.fastq == CTD_2_1
+#191112_19-10127_CTD_2-Capt_S34_L000_2.fastq == CTD_2_2
+#191113_19-10126_CTD_1-Capt_S53_L000_1.fastq == CTD_1_1
+#191113_19-10126_CTD_1-Capt_S53_L000_2.fastq == CTD_1_2
