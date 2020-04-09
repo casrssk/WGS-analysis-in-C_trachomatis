@@ -5,7 +5,7 @@ rule vcf_edit:
 	input:"results/var_call/filtered/filtered.snps.vcf"
 	output:"results/var_call/filtered/edit.snps.vcf"
 	log:"logs/edit_snps.log"
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		cat {input} | sed -e "s/^NC_000117.1/Chromosome/g" -e "s/^ct_genome/Chromosome/g"  > {output}
@@ -19,10 +19,10 @@ rule snp_eff:
 	output:calls="results/snpeff/snps.annotate.vcf", stats="results/snpeff/snps.html", csvstats="results/snpeff/snps.csv"
 	log:"logs/snps_annotation.log"
 	params:reference="Chlamydia_trachomatis_d_uw_3_cx"
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		java -Xmx4g -jar /home/kaurs/SCRATCH_NOBAK/ct_analysis/project/samples/4.3u/snpEff/snpEff.jar -c /home/kaurs/SCRATCH_NOBAK/ct_analysis/project/samples/4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
+		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
 #######################################
 ###### edit vcf file for indels
@@ -31,7 +31,7 @@ rule edit_indel_vcf:
 	input:"results/var_call/filtered/filtered.indels.vcf"
 	output:"results/var_call/filtered/edit.indels.vcf"
 	log:"logs/edit_indels.log"
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		cat {input} | sed -e "s/^NC_000117.1/Chromosome/g" -e "s/^ct_genome/Chromosome/g"  > {output}
@@ -46,10 +46,10 @@ rule indel_eff:
 	output:calls="results/snpeff/indels.annotate.vcf", stats="results/snpeff/indels.html", csvstats="results/snpeff/indels.csv"
 	log:"logs/indels_annotation.log"
 	params:reference="Chlamydia_trachomatis_d_uw_3_cx"
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		java -Xmx4g -jar /home/kaurs/SCRATCH_NOBAK/ct_analysis/project/samples/4.3u/snpEff/snpEff.jar -c /home/kaurs/SCRATCH_NOBAK/ct_analysis/project/samples/4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
+		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
 															
 ######################################
@@ -59,7 +59,7 @@ rule snps_vcf_to_tsv:
 	input:"results/snpeff/snps.annotate.vcf"
 	output:"results/var_call/filtered/snps.table"
 	log:"logs/snps_table.log"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk VariantsToTable -V {input} -F CHROM -F POS -F QUAL -F TYPE -F ANN -GF AD -GF DP -GF GT -O {output}
@@ -72,7 +72,7 @@ rule indels_vcf_to_tsv:
 	input:"results/snpeff/indels.annotate.vcf"
 	output:"results/var_call/filtered/indels.table"
 	log:"logs/indel_table.log"
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk VariantsToTable -V {input} -F CHROM -F POS -F QUAL -F TYPE -F ANN -GF AD -GF DP -GF GT -O {output}
@@ -93,10 +93,9 @@ rule multi_qc:
 	output:"results/multiqc/multiqc_report.html"
 	params: [config["multiqc_params"]],
 	log:"logs/multi_qc"
-	conda: wdir + "envs/variant_stats.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		export LC_ALL=en_US.UTF-8 && multiqc -f --outdir results/multiqc .
+		multiqc results --outdir results/multiqc 
 		"""
-
 

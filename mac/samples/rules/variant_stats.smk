@@ -22,7 +22,7 @@ rule snp_eff:
 	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		java -Xmx4g -jar /Users/satwantkaur/Desktop/project/samples/4.3u/snpEff/snpEff.jar -c /Users/satwantkaur/Desktop/project/samples/4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
+		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
 #######################################
 ###### edit vcf file for indels
@@ -49,7 +49,7 @@ rule indel_eff:
 	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		java -Xmx4g -jar /Users/satwantkaur/Desktop/project/samples/4.3u/snpEff/snpEff.jar -c /Users/satwantkaur/Desktop/project/samples/4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
+		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
 															
 ######################################

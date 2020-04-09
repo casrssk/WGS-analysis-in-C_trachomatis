@@ -1,12 +1,13 @@
-##########################################
-####### Index bam file-samtools
-#############################################
+############################################
+####### Index bam file-samtool
+############################################
 rule samtools_index:
 	input:"results/mapping/addrg/{sample}.addrg.bam"
 	output:"results/mapping/addrg/{sample}.addrg.bam.bai"
+	priority: 50
 	log:"logs/{sample}_ct_dedup_bai.log"
 	params:""
-	conda:wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		samtools index {input} > {output}
@@ -16,14 +17,14 @@ rule samtools_index:
 ############  variant calling
 ##############################################
 rule variant_calling:
-	input:bam="results/mapping/addrg/{sample}.addrg.bam",ref="reference/ct_genome_consensus.fasta"
+	input:bam="results/mapping/addrg/{sample}.addrg.bam", ref="reference/ct_genome_consensus.fasta"
 	output:vcf_file="results/var_call/{sample}.vcf"
 	log:"logs/{sample}_vcf.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		gatk HaplotypeCaller -R {input.ref} -I {input.bam} -O {output.vcf_file} -ploidy 1 
+		gatk HaplotypeCaller -R {input.ref} -I {input.bam} -O {output.vcf_file} -ploidy 1 --java-options '-DGATK_STACKTRACE_ON_USER_EXCEPTION=true'
 		"""
 
 
@@ -36,7 +37,7 @@ rule create_bcfnorm:
 	output:bcf_file="results/var_call/{sample}.norm.bcf"
 	log:"logs/{sample}_bcf_norm.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		bcftools norm -m-any {input.vcf_file} | bcftools norm -Ob --check-ref w -f {input.ref} >  {output.bcf_file}
@@ -47,12 +48,14 @@ rule create_bcfnorm:
 ###############################################
 rule bcf_index:
 	input:bcf_file="results/var_call/{sample}.norm.bcf"
+	output:bcf_index="results/var_call/{sample}.norm.bcf.csi"
+	priority: 50
 	log:"logs/{sample}_bcf_norm_csi.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		bcftools index -f {input.bcf_file} > {log}
+		bcftools index -f {input.bcf_file} > {output.bcf_index}
 		"""
 
 
@@ -66,7 +69,7 @@ rule merge_vcfs:
 	output:"results/var_call/variants.norm.merged.vcf"
 	log:"logs/merged_vcf.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		bcftools merge -Ov -m none {input} > {output} 
@@ -80,7 +83,7 @@ rule select_snps:
 	output:snps_vcf="results/var_call/snps/snps.vcf"
 	log:"logs/snps_vcf.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk SelectVariants -R {input.ref} -V {input.merged} --select-type-to-include SNP -O {output.snps_vcf} 
@@ -94,7 +97,7 @@ rule select_indel:
 	output:indel_vcf="results/var_call/indels/indel.vcf"
 	log:"logs/indel_vcf.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk SelectVariants -R {input.ref} -V {input.indel} --select-type-to-include INDEL -O {output.indel_vcf} 
@@ -110,10 +113,10 @@ rule filter_snps:
 	output:filtered_vcf="results/var_call/filtered/filtered.snps.vcf"
 	log:"logs/filtered_vcf.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		grep "#" {input.filter_snps} > {output.filtered_vcf} | grep -v "#" {input.filter_snps} | grep "DP=10" | awk "{{if(\$6>60) print}}" >> {output.filtered_vcf}
+		cat {input.filter_snps} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 10)" > {output.filtered_vcf}
 		"""
 
 
@@ -125,10 +128,10 @@ rule filter_indel:
 	output:filtered_indel="results/var_call/filtered/filtered.indels.vcf"
 	log:"logs/filtered_indels.log"
 	params:""
-	conda:wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"	
 	shell:
 		"""
-		grep "#" {input.filter_indel} > {output.filtered_indel} | grep -v "#" {input.filter_indel} | grep "DP=3" | awk "{{if(\$6>60) print}}" >> {output.filtered_indel}
+		cat {input.filter_indel} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 2)" > {output.filtered_indel}
 		"""
 
 

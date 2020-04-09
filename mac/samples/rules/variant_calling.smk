@@ -116,7 +116,7 @@ rule filter_snps:
 	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		grep "#" {input.filter_snps} > {output.filtered_vcf} | grep -v "#" {input.filter_snps} | grep "DP=10" | awk "{{if(\$6>60) print}}" >> {output.filtered_vcf}
+		cat {input.filter_snps} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 10)" > {output.filtered_vcf}
 		"""
 
 
@@ -131,7 +131,7 @@ rule filter_indel:
 	conda: wdir + "envs/environment.yml"	
 	shell:
 		"""
-		grep "#" {input.filter_indel} > {output.filtered_indel} | grep -v "#" {input.filter_indel} | grep "DP=3" | awk "{{if(\$6>60) print}}" >> {output.filtered_indel}
+		cat {input.filter_indel} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 2)" > {output.filtered_indel}
 		"""
 
 

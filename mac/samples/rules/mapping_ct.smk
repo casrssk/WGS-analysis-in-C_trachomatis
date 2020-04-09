@@ -3,7 +3,7 @@
 #################################
 rule  mapping_ct:
 	input:r1="results/normalized/{sample}.norm_1.fastq.gz" if config["normalization"]==1 else "results/ct_fastq/{sample}_1.fastq.gz",
-		r2="results/normalized/{sample}.norm_2.fastq.gz" if config["normalization"]==1 else "results/ct_fastq/{sample}_1.fastq.gz"
+		r2="results/normalized/{sample}.norm_2.fastq.gz" if config["normalization"]==1 else "results/ct_fastq/{sample}_2.fastq.gz"
 	output:"results/mapping/{sample}.bam"
 	log: "logs/{sample}_ct_bowtie2.log"
 	params: 

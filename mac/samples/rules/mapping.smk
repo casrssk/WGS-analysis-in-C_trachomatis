@@ -49,7 +49,20 @@ rule samtools_bam2fq_interleaved:
 	input:"bam_files/{sample}.sorted.bam"
 	output:R1="results/ct_fastq/{sample}_1.fastq", R2="results/ct_fastq/{sample}_2.fastq"
 	params:" "
-	threads: 3
+	threads: 2
 	conda: wdir + "envs/environment.yml"
 	shell:
         	"bedtools bamtofastq -i {input} -fq {output.R1} -fq2 {output.R2}"
+
+#################################
+#file compress
+#################################
+Rule fatsq_compression:
+	input: read1 = "results/ct_fastq/{sample}_1.fastq", read2 = "results/ct_fastq/{sample}_2.fastq"
+	output: read1 = "results/ct_fastq/{sample}_1.fastq.gz", read2 = "results/ct_fastq/{sample}_2.fastq.gz"
+	conda: wdir + "envs/environment.yml"
+	shell:
+		"""
+		gzip {input}
+		"""
+
