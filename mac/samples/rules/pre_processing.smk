@@ -16,10 +16,10 @@ rule fastqc1:
 #################################
 rule bbnorm:
 	input:r1="results/ct_fastq/{sample}_1.fastq.gz", r2="results/ct_fastq/{sample}_2.fastq.gz"
-	output:read1 = "results/normalized/{sample}.norm_1.fastq", read2 = "results/normalized/{sample}.norm_2.fastq"
+	output:read1 = "results/normalized/{sample}.norm_1.fastq.gz", read2 = "results/normalized/{sample}.norm_2.fastq.gz"
 	params:hist_in = "results/normalized/{sample}_input_hist.txt",
 	       hist_out = "results/normalized/{sample}_output_hist.txt",
-	       out_toss = "results/normalized/{sample}.toss.fastq",
+	       out_toss = "results/normalized/{sample}.toss.fastq.gz",
 	       passes = "2",
 	       options = "ecc=t fixspikes=t prefilter=t"
 	threads: 16
@@ -28,19 +28,6 @@ rule bbnorm:
 	shell:
 		"""
 		bbnorm.sh in={input.r1} in2={input.r2} hist={params.hist_in} histout={params.hist_out} out={output.read1} out2={output.read2} outt={params.out_toss} passes={params.passes} threads={threads} {params.options}		      """
-
-
-#################################
-#Compressing the file
-#################################
-rule compression:
-	input: read1 = "results/normalized/{sample}.norm_1.fastq", read2 = "results/normalized/{sample}.norm_2.fastq"
-	output: read1 = "results/normalized/{sample}.norm_1.fastq.gz", read2 = "results/normalized/{sample}.norm_2.fastq.gz"
-	conda: wdir + "envs/environment.yml"
-	shell:
-		"""
-		gzip {input}
-		"""
 
 
 ##################################

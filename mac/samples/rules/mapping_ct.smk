@@ -16,12 +16,25 @@ rule  mapping_ct:
 		samtools view  -bS  > {output}
 		"""
 
+#################################
+###getting only mapped reads Samtools
+###################################
+rule sorting_reads:
+	input:"results/mapping/{sample}.bam"
+	output:"results/mapping/{sample}.mapped.bam"
+	log:"logs/{sample}_mapped.log"
+	conda: wdir + "envs/environment.yml"
+	shell:
+		"""
+		samtools view -b -F 4 {input} > {output} 
+		"""
+
 
 #################################
 ###sorting with Samtools
 ###################################
 rule sorting_reads:
-	input:"results/mapping/{sample}.bam"
+	input:"results/mapping/{sample}.mapped.bam"
 	output:"results/mapping/sort/{sample}.sorted.bam"
 	log:"logs/{sample}_sorted.log"
 	conda: wdir + "envs/environment.yml"
