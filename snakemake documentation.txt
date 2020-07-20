@@ -44,10 +44,9 @@ https://1drv.ms/u/s!AoZAmrQJEC56gzvzGdza5UFPnA-t?e=IUOGol
 
 4). You have to set up conda channels and then create a virtual environment and install all the dependencies into it using the following command. 
 
-cd <path to the folder containing environment.yml>
 conda install Ðchannel ÒAgBiomeÓ package
 conda config Ðappend channels AgBiome
-conda env create -c conda-forge -c bioconda Ðc defaults Ðc R -f environment.yml 
+conda env create -c conda-forge -c bioconda Ðc defaults Ðc R -n environment -f environment.yml 
 
 5). Execute the workflow by first testing it using dry-run option
 snakemake Ðn
