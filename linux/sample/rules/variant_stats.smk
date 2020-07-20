@@ -5,7 +5,7 @@ rule vcf_edit:
 	input:"results/var_call/filtered/{sample}.filtered.snps.vcf"
 	output:"results/var_call/filtered/{sample}.edit.snps.vcf"
 	log:"logs/{sample}_edit_snps.log"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		cat {input} | sed -e "s/^NC_000117.1/Chromosome/g" -e "s/^ct_genome/Chromosome/g"  > {output}
@@ -19,7 +19,7 @@ rule snp_eff:
 	output:calls="results/snpeff/{sample}.snps.annotate.vcf", stats="results/snpeff/{sample}.snps.html", csvstats="results/snpeff/{sample}.snps.csv"
 	log:"logs/{sample}_snps_annotation.log"
 	params:reference="Chlamydia_trachomatis_d_uw_3_cx"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
@@ -31,7 +31,7 @@ rule edit_indel_vcf:
 	input:"results/var_call/filtered/{sample}.filtered.indels.vcf"
 	output:"results/var_call/filtered/{sample}.edit.indels.vcf"
 	log:"logs/{sample}_edit_indels.log"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		cat {input} | sed -e "s/^NC_000117.1/Chromosome/g" -e "s/^ct_genome/Chromosome/g"  > {output}
@@ -46,7 +46,7 @@ rule indel_eff:
 	output:calls="results/snpeff/{sample}.indels.annotate.vcf", stats="results/snpeff/{sample}.indels.html", csvstats="results/snpeff/{sample}.indels.csv"
 	log:"logs/{sample}_indels_annotation.log"
 	params:reference="Chlamydia_trachomatis_d_uw_3_cx"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
@@ -59,7 +59,7 @@ rule snps_vcf_to_tsv:
 	input:"results/snpeff/{sample}.snps.annotate.vcf"
 	output:"results/var_call/filtered/{sample}.snps.table"
 	log:"logs/{sample}_snps_table.log"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk VariantsToTable -V {input} -F CHROM -F POS -F REF -F ALT -F QUAL -F ANN -GF AD -GF DP -GF GT -O {output}
@@ -72,7 +72,7 @@ rule indels_vcf_to_tsv:
 	input:"results/snpeff/{sample}.indels.annotate.vcf"
 	output:"results/var_call/filtered/{sample}.indels.table"
 	log:"logs/{sample}_indel_table.log"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk VariantsToTable -V {input} -F CHROM -F POS -F QUAL -F TYPE -F ANN -GF AD -GF DP -GF GT -O {output}
@@ -93,7 +93,7 @@ rule multi_qc:
 	output:"results/multiqc/multiqc_report.html"
 	params: [config["multiqc_params"]],
 	log:"logs/multi_qc"
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		multiqc results --outdir results/multiqc 

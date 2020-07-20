@@ -7,7 +7,7 @@ rule samtools_index:
 	priority: 50
 	log:"logs/{sample}_ct_dedup_bai.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		samtools index {input} > {output}
@@ -21,7 +21,7 @@ rule variant_calling:
 	output:vcf_file="results/var_call/{sample}.vcf"
 	log:"logs/{sample}_vcf.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk HaplotypeCaller -R {input.ref} -I {input.bam} -O {output.vcf_file} -ploidy 1 --java-options '-DGATK_STACKTRACE_ON_USER_EXCEPTION=true'
@@ -35,7 +35,7 @@ rule select_snps:
 	output:snps_vcf="results/var_call/snps/{sample}.snps.vcf"
 	log:"logs/{sample}_snps.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk SelectVariants -R {input.ref} -V {input.merged} --select-type-to-include SNP -O {output.snps_vcf} 
@@ -49,7 +49,7 @@ rule select_indel:
 	output:indel_vcf="results/var_call/indels/{sample}.indel.vcf"
 	log:"logs/{sample}_indel.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		gatk SelectVariants -R {input.ref} -V {input.indel} --select-type-to-include INDEL -O {output.indel_vcf} 
@@ -65,7 +65,7 @@ rule filter_snps:
 	output:filtered_vcf="results/var_call/filtered/{sample}.filtered.snps.vcf"
 	log:"logs/{sample}_filtered.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		cat {input.filter_snps} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 10)" > {output.filtered_vcf}
@@ -80,7 +80,7 @@ rule filter_indel:
 	output:filtered_indel="results/var_call/filtered/{sample}.filtered.indels.vcf"
 	log:"logs/{sample}_filtered_indels.log"
 	params:""
-	conda: wdir + "envs/variant_calling.yml"	
+	conda: wdir + "envs/environment.yml"	
 	shell:
 		"""
 		cat {input.filter_indel} |java -jar 4.3u/snpEff/SnpSift.jar filter " ( QUAL >= 30 ) && (DP >= 2)" > {output.filtered_indel}

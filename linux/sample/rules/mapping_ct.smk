@@ -9,7 +9,7 @@ rule  mapping_ct:
 	params: 
 		index="reference/ct_pan"
 	threads:8
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		bowtie2 -x {params.index} -1 {input.r1} -2 {input.r2} 2> {log} | \
@@ -19,11 +19,11 @@ rule  mapping_ct:
 #################################
 ###getting only mapped reads Samtools
 ###################################
-rule sorting_reads:
+rule map_reads:
 	input:"results/mapping/{sample}.bam"
 	output:"results/mapping/{sample}.mapped.bam"
 	log:"logs/{sample}_mapped.log"
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		samtools view -b -F 4 {input} > {output} 
@@ -37,7 +37,7 @@ rule sorting_reads:
 	input:"results/mapping/{sample}.mapped.bam"
 	output:"results/mapping/sort/{sample}.sorted.bam"
 	log:"logs/{sample}_sorted.log"
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		picard  SortSam I={input} O={output} SORT_ORDER=coordinate
@@ -52,7 +52,7 @@ rule mark_duplicates:
 	output:bam="results/mapping/dedup/{sample}.dedup.bam", metrics="results/mapping/dedup/{sample}.metrics.txt"
 	log:"logs/{sample}_ct_dedup.log"
 	params:config["Duplicates"],
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		picard MarkDuplicates {params} I={input} O={output.bam} METRICS_FILE={output.metrics} AS=TRUE
@@ -66,7 +66,7 @@ rule validate_bam:
 	output:"results/mapping/dedup/{sample}_stats/qualimapReport.html"
 	log:"logs/{sample}_bam_stats.log"
 	params:outdir="results/mapping/dedup/{sample}_stats"
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		qualimap bamqc -bam {input} --outdir {params.outdir} 
@@ -80,7 +80,7 @@ rule addorreplacgroups:
 	output:"results/mapping/addrg/{sample}.addrg.bam"
 	log:"logs/{sample}_ct_dedup_addrg.log"
 	params:config["addorreplacgroups"],
-	conda: wdir + "envs/mapping.yml"
+	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
 		picard AddOrReplaceReadGroups I={input} O={output} {params}
