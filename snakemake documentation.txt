@@ -42,6 +42,9 @@ cd WGS-analysis-in-C_trachomatis.git
 The sample data and the normalized data can also be downloaded from this link
 https://1drv.ms/u/s!AoZAmrQJEC56gzvzGdza5UFPnA-t?e=IUOGol
 
+The annotation file can be downloaded from this link
+https://drive.google.com/drive/folders/11C-vCIg9Lav3INyzm-iFBhokTeIUr0NB
+
 4). You have to set up conda channels and then create a virtual environment and install all the dependencies into it using the following command. 
 
 conda install Ðchannel ÒAgBiomeÓ package
