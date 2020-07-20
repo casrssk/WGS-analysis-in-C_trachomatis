@@ -24,7 +24,12 @@ Configuring the workflow
 The configuration file config.yaml offers some flexibility to the user and some (or all) of the parameters can be passed onto the executable using the specified fields. The users should change the working directory by providing the absolute path to where the mac/linux folder is saved. Depending on the research question, the user can keep or remove the duplicates from the sequencing data by changing the parameter in the config file. The read groups can be named to suit the user requirement. MULTIQC parameter field refers to a separate configuration file stored in the rules folder, which provides an order of the reports that are generated during the execution of the workflow. Furthermore, an on/off switch is provided for the execution of BBNORM. If the coverage is homogeneous then normalization step is not advisable. But since in these samples, it was not homogeneous (FASTQC report) so the default is set to 1, but can be changed. To introduce this option in the workflow, an if-statement has been added in the mapping step with BOWTIE2 and when generating the MULTIQC report.
 
 Step by step instructions:
-1). If you donÕt have conda on your computer you can install the Miniconda Python3 distribution from this link (https://conda.io/en/latest/miniconda.html). Make sure you answer yes to the question whether conda shall be put into your PATH.
+1). If you donÕt have conda on your computer you can install the Miniconda Python3 distribution from this link (https://conda.io/en/latest/miniconda.html). Make sure you answer yes to the question whether conda shall be put into your PATH. Add the following channels
+a). bioconda channel
+b). AgBiome
+c). defaults
+d). conda-forge
+You can add channel using conda config --add channels <channel_name>
 
 2). Obtain the copy this workflow
 git clone https://github.com/casrssk/WGS-analysis-in-C_trachomatis.git
