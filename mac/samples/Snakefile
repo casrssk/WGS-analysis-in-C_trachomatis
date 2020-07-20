@@ -29,7 +29,6 @@ rule all:
 	input:"results/multiqc/multiqc_report.html",
 	      expand("results/var_call/filtered/{sample}.snps.table",sample=SAMPLES),
 	      expand("results/var_call/filtered/{sample}.indels.table",sample=SAMPLES),
-	      expand("results/var_call/{sample}.norm.bcf.csi", sample=SAMPLES),
 	      expand("results/mapping/addrg/{sample}.addrg.bam.bai", sample=SAMPLES),
 
       
