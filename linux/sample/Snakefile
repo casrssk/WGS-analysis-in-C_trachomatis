@@ -8,6 +8,7 @@ Affiliation: Robert Koch Institute
 Aim: A simple Snakemake workflow to process WGS data from clinical samples.
 Run: snakemake  --cores 2   
 generate rulegraph: snakemake --rulegraph 2> /dev/null | dot -T png > workflow.png
+generate report: snakemake --report report.html
 """
 
 import glob
@@ -26,8 +27,8 @@ subpath = os.getcwd()
 
 rule all:
 	input:"results/multiqc/multiqc_report.html",
-	      "results/var_call/filtered/snps.table",
-	      "results/var_call/filtered/indels.table",
+	      expand("results/var_call/filtered/{sample}.snps.table",sample=SAMPLES),
+	      expand("results/var_call/filtered/{sample}.indels.table",sample=SAMPLES),
 	      expand("results/var_call/{sample}.norm.bcf.csi", sample=SAMPLES),
 	      expand("results/mapping/addrg/{sample}.addrg.bam.bai", sample=SAMPLES),
 
@@ -45,12 +46,4 @@ include: "rules/mapping_ct.smk"
 include: "rules/variant_calling.smk"
 include: "rules/variant_stats.smk"
 
-#:"results/multi_qc_report.html",
-#
-#results/var_call/filtered/filtered.indels.vcf",
-#results/var_call/filtered/filtered.snps.vcf"
-#"results/var_call/variants.norm.merged.vcf",
-#	      #expand("results/var_call/{sample}.norm.bcf.csi", sample=SAMPLES),
-#expand("results/var_call/{sample}.vcf", sample=SAMPLES),
-#"results/multiqc/multiqc.html",
-#
+
