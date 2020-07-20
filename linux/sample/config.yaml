@@ -1,4 +1,4 @@
-working_dir: "../linux/samples/"
+working_dir: "../linux/sample/"
 
 Duplicates: "REMOVE_DUPLICATES=true"
 
