@@ -8,6 +8,7 @@ Affiliation: Robert Koch Institute
 Aim: A simple Snakemake workflow to process WGS data from clinical samples.
 Run: snakemake  --cores 2   
 generate rulegraph: snakemake --rulegraph 2> /dev/null | dot -T png > workflow.png
+generate report: snakemake --report report.html
 """
 
 import glob
@@ -15,10 +16,9 @@ import os
 import pandas as pd
 
 
-
 configfile: "config.yaml"
 wdir = config["working_dir"]
-SAMPLES, = glob_wildcards(wdir + "results/normalized/{sample}.norm_1.fastq.gz")
+SAMPLES, = glob_wildcards(wdir + "results/normalized/{sample}.norm_1.fastq")
 
 
 
@@ -27,13 +27,12 @@ subpath = os.getcwd()
 
 rule all:
 	input:"results/multiqc/multiqc_report.html",
-	      "results/var_call/filtered/snps.table",
-	      "results/var_call/filtered/indels.table",
+	      expand("results/var_call/filtered/{sample}.snps.table",sample=SAMPLES),
+	      expand("results/var_call/filtered/{sample}.indels.table",sample=SAMPLES),
 	      expand("results/var_call/{sample}.norm.bcf.csi", sample=SAMPLES),
 	      expand("results/mapping/addrg/{sample}.addrg.bam.bai", sample=SAMPLES),
 
-
-	      
+      
 	     
 	     
 	     
@@ -46,4 +45,5 @@ include: "rules/pre_processing.smk"
 include: "rules/mapping_ct.smk"
 include: "rules/variant_calling.smk"
 include: "rules/variant_stats.smk"
+
 
