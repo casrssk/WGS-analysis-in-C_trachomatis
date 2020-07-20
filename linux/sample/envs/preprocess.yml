@@ -1,17 +1,20 @@
 name: preprocess
 channels:
+  - agbiome
+  - cyclus
   - conda-forge
   - bioconda
   - defaults
-  - agbiome
-  - sionbayliss
+  - AgBiome
 dependencies:
   - _libgcc_mutex=0.1=main
   - bbtools=37.62=0
   - bzip2=1.0.8=h516909a_0
-  - ca-certificates=2019.6.16=hecc5488_0
-  - certifi=2019.6.16=py37_1
+  - ca-certificates=2020.6.20=hecda079_0
+  - certifi=2020.6.20=py37hc8dfbb8_0
   - curl=7.65.3=hf8cf82a_0
+  - fastqc=0.11.7=pl5.22.0_0
+  - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
   - java-jdk=8.0.112=1
   - krb5=1.16.3=h05b26f9_1001
   - libcurl=7.65.3=hda55be3_0
@@ -23,10 +26,11 @@ dependencies:
   - libstdcxx-ng=9.1.0=hdf63c60_0
   - ncurses=6.1=hf484d3e_1002
   - openjdk=8.0.112=zulu8.19.0.1_3
-  - openssl=1.1.1c=h516909a_0
+  - openssl=1.1.1g=h516909a_0
+  - perl=5.22.0.1=0
   - pip=19.1.1=py37_0
   - python=3.7.3=h33d41f4_1
-  - pyyaml
+  - python_abi=3.7=1_cp37m
   - readline=8.0=hf8c457e_0
   - samtools=1.9=h8571acd_11
   - setuptools=41.0.1=py37_0
@@ -36,5 +40,4 @@ dependencies:
   - xz=5.2.4=h14c3975_1001
   - zlib=1.2.11=h516909a_1005
 prefix: /home/kaurs/.conda/envs/preprocess
-
 

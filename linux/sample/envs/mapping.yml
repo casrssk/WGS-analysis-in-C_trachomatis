@@ -1,5 +1,6 @@
 name: mapping
 channels:
+  - cyclus
   - conda-forge
   - bioconda
   - defaults
@@ -11,15 +12,38 @@ dependencies:
   - bedtools=2.29.2=hc088bd4_0
   - binutils_impl_linux-64=2.33.1=h53a641e_8
   - binutils_linux-64=2.33.1=h9595d00_16
+  - bioconductor-biobase=2.46.0=r36h516909a_0
+  - bioconductor-biocgenerics=0.32.0=r36_0
+  - bioconductor-biocparallel=1.20.0=r36he1b5a44_0
+  - bioconductor-biostrings=2.54.0=r36h516909a_0
+  - bioconductor-genomeinfodb=1.22.0=r36_0
+  - bioconductor-genomeinfodbdata=1.2.2=r36_0
+  - bioconductor-genomicalignments=1.6.3=1
+  - bioconductor-genomicranges=1.38.0=r36h516909a_0
+  - bioconductor-iranges=2.20.0=r36h516909a_0
+  - bioconductor-noiseq=2.30.0=r36_0
+  - bioconductor-rhtslib=1.18.0=r36hdb70ac9_1
+  - bioconductor-rsamtools=2.2.0=r36he1b5a44_0
+  - bioconductor-rtracklayer=1.36.6=0
+  - bioconductor-s4vectors=0.24.0=r36h516909a_0
+  - bioconductor-summarizedexperiment=1.0.2=1
+  - bioconductor-xvector=0.26.0=r36h516909a_0
+  - bioconductor-zlibbioc=1.32.0=r36h516909a_0
   - bowtie2=2.3.5=py37he860b03_0
   - bwa=0.7.17=hed695b0_7
   - bwidget=1.9.14=0
   - bzip2=1.0.8=h516909a_2
-  - ca-certificates=2019.11.28=hecc5488_0
+  - ca-certificates=2020.6.20=hecda079_0
   - cairo=1.16.0=hfb77d84_1002
-  - certifi=2019.11.28=py37_0
+  - certifi=2020.6.20=py37hc8dfbb8_0
   - curl=7.65.3=hf8cf82a_0
+  - font-ttf-dejavu-sans-mono=2.37=hab24e00_0
+  - font-ttf-inconsolata=2.001=hab24e00_0
+  - font-ttf-source-code-pro=2.030=hab24e00_0
+  - font-ttf-ubuntu=0.83=hab24e00_0
   - fontconfig=2.13.1=h86ecdb6_1001
+  - fonts-conda-ecosystem=1=0
+  - fonts-conda-forge=1=0
   - freebayes=1.0.2=0
   - freetype=2.10.0=he983fc9_1
   - fribidi=1.0.5=h516909a_1002
@@ -63,7 +87,7 @@ dependencies:
   - make=4.2.1=h14c3975_2004
   - ncurses=6.1=hf484d3e_1002
   - openjdk=8.0.112=zulu8.19.0.1_3
-  - openssl=1.1.1d=h516909a_0
+  - openssl=1.1.1g=h516909a_0
   - pango=1.42.4=ha030887_1
   - pcre=8.44=he1b5a44_0
   - perl=5.26.2=h516909a_1006
@@ -72,7 +96,37 @@ dependencies:
   - pixman=0.38.0=h516909a_1003
   - pthread-stubs=0.4=h14c3975_1001
   - python=3.7.3=h357f687_2
+  - python_abi=3.7=1_cp37m
+  - qualimap=2.2.2d=1
+  - r=3.6=r36_1004
   - r-base=3.6.2=h7ed4ef7_1
+  - r-bh=1.72.0_3=r36h6115d3f_1
+  - r-bitops=1.0_6=r36hcdcec82_1004
+  - r-boot=1.3_25=r36h6115d3f_1
+  - r-class=7.3_17=r36hcdcec82_1
+  - r-cluster=2.1.0=r36h9bbef5b_3
+  - r-codetools=0.2_16=r36h6115d3f_1002
+  - r-foreign=0.8_76=r36hcdcec82_1
+  - r-formatr=1.7=r36h6115d3f_2
+  - r-futile.logger=1.4.3=r36h6115d3f_1003
+  - r-futile.options=1.0.1=r36h6115d3f_1002
+  - r-getopt=1.20.3=r36_2
+  - r-kernsmooth=2.23_17=r36hfa343cc_1
+  - r-lambda.r=1.2.4=r36h6115d3f_1
+  - r-lattice=0.20_41=r36hcdcec82_2
+  - r-mass=7.3_51.6=r36hcdcec82_2
+  - r-matrix=1.2_18=r36h7fa42b6_3
+  - r-mgcv=1.8_31=r36h7fa42b6_1
+  - r-nlme=3.1_148=r36h9bbef5b_0
+  - r-nnet=7.3_14=r36hcdcec82_1
+  - r-optparse=1.6.6=r36h6115d3f_1
+  - r-rcurl=1.98_1.1=r36hcdcec82_0
+  - r-recommended=3.6=r36_1004
+  - r-rpart=4.1_15=r36hcdcec82_2
+  - r-snow=0.4_3=r36h6115d3f_1002
+  - r-spatial=7.3_12=r36hcdcec82_1
+  - r-survival=3.2_3=r36hcdcec82_0
+  - r-xml=3.99_0.3=r36hcdcec82_1
   - readline=8.0=hf8c457e_0
   - samtools=1.9=h10a08f8_12
   - sed=4.7=h1bed415_1000
