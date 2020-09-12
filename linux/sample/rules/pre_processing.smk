@@ -1,18 +1,19 @@
-##################################
-###fastqc 1
-###################################
+################################################################
+### fastqc1 performed on the Chlamydia reads before normalisation
+################################################################
 rule fastqc1:
 	input:r1="results/ct_fastq/{sample}_1.fastq.gz", r2="results/ct_fastq/{sample}_2.fastq.gz"
-	output:r1="results/fastqc1/{sample}_1_fastqc.html",r2="results/fastqc1/{sample}_2_fastqc.html"
+	output:r1="results/fastqc1/{sample}_1_fastqc.html",r2="results/fastqc1/{sample}_2_fastqc.html
 	threads: 30
 	log:"logs/{sample}_fastqc1.log"
 	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		fastqc --outdir results/fastqc1/ --extract  -f fastq {input.r1} {input.r2} --thread 16                                                                                                                                        """
+		fastqc --outdir results/fastqc1/ --extract  -f fastq {input.r1} {input.r2} --thread 16 
+                                                                                                                                                       """
 
 #################################
-#BBnorm
+### reads normalised using bbnorm
 #################################
 rule bbnorm:
 	input:r1="results/ct_fastq/{sample}_1.fastq.gz", r2="results/ct_fastq/{sample}_2.fastq.gz"
@@ -27,13 +28,14 @@ rule bbnorm:
 	conda: wdir + "envs/environment.yml"
 	shell:
 		"""
-		bbnorm.sh in={input.r1} in2={input.r2} hist={params.hist_in} histout={params.hist_out} out={output.read1} out2={output.read2} outt={params.out_toss} passes={params.passes} threads={threads} {params.options}		      """
+		bbnorm.sh in={input.r1} in2={input.r2} hist={params.hist_in} histout={params.hist_out} out={output.read1} out2={output.read2} outt={params.out_toss} passes={params.passes} threads={threads} {params.options}		     
+                """
 
 
 
-##################################
-###fastqc 2
-###################################
+##################################################################################################
+### fastqc2 performed after the normalisation step to comapre the quality with pre normalised reads
+###################################################################################################
 rule fastqc2:
 	input:r1="results/normalized/{sample}.norm_1.fastq.gz", r2="results/normalized/{sample}.norm_2.fastq.gz"
 	output:r1="results/fastqc2/{sample}.norm_1_fastqc.html",r2="results/fastqc2/{sample}.norm_2_fastqc.html"
