@@ -1,8 +1,8 @@
-#################################
-#mapping with bowtie- human
-##################################
+##################################################################
+### mapping reads to human reference genome usinhg bowtie- human
+###################################################################
 rule bowtie2:
-	input:r1=wdir + "raw/{sample}_1.fastq.gz", r2=wdir + "raw/{sample}_2.fastq.gz"
+	input:r1=wdir + "raw/{sample}_1.fastq", r2=wdir + "raw/{sample}_2.fastq"
 	output:"bam_files/{sample}.bam"
 	log: "logs/{sample}_bowtie2.log"
 	params: 
@@ -15,9 +15,9 @@ rule bowtie2:
 		samtools view  -bS  > {output}
 		"""
 
-#################################
-### Filter unmapped reads              
-###################################
+##############################################################
+### Filter unmapped reads to get the chlamydia related reads              
+##############################################################
 rule filter:
 	input:"bam_files/{sample}.bam"
 	output:"bam_files/{sample}.unmappedreads.bam"
@@ -29,9 +29,9 @@ rule filter:
 		"""
 
 
-#################################
-###sorting with Samtools
-###################################
+##############################################
+### sorting the unmapped reads with Samtools
+###############################################
 rule sorting:
 	input:"bam_files/{sample}.unmappedreads.bam"
 	output:"bam_files/{sample}.sorted.bam"
@@ -42,17 +42,15 @@ rule sorting:
 		samtools sort -n {input} > {output}
 		"""
 
-#################################
-####converting to fastq files
-#################################
+############################################################
+### converting the unmapped sorted bam files to fastq files
+############################################################
 rule samtools_bam2fq_interleaved:
 	input:"bam_files/{sample}.sorted.bam"
-	output:R1="results/ct_fastq/{sample}_1.fastq.gz", R2="results/ct_fastq/{sample}_2.fastq.gz"
+	output:R1="results/ct_fastq/{sample}_1.fastq", R2="results/ct_fastq/{sample}_2.fastq"
 	params:" "
 	threads: 2
 	conda: wdir + "envs/environment.yml"
 	shell:
         	"bedtools bamtofastq -i {input} -fq {output.R1} -fq2 {output.R2}"
-
-
 

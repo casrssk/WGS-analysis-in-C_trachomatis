@@ -1,6 +1,6 @@
-############################################
-####### Index bam file-samtool
-############################################
+###################################
+### Indexng  bam file using samtool
+###################################
 rule samtools_index:
 	input:"results/mapping/addrg/{sample}.addrg.bam"
 	output:"results/mapping/addrg/{sample}.addrg.bam.bai"
@@ -13,9 +13,9 @@ rule samtools_index:
 		samtools index {input} > {output}
 		"""
 
-###########################################
-############  variant calling
-##############################################
+##########################################################
+### variant calling using GATK4 with ploidy equal to one
+##########################################################
 rule variant_calling:
 	input:bam="results/mapping/addrg/{sample}.addrg.bam", ref="reference/ct_genome_consensus.fasta"
 	output:vcf_file="results/var_call/{sample}.vcf"
@@ -27,9 +27,9 @@ rule variant_calling:
 		gatk HaplotypeCaller -R {input.ref} -I {input.bam} -O {output.vcf_file} -ploidy 1 --java-options '-DGATK_STACKTRACE_ON_USER_EXCEPTION=true'
 		"""
 
-#########################################
-############  select snps- gatk
-##############################################
+##################################################
+### select only snps from the vcf file using gatk
+##################################################
 rule select_snps:
 	input:merged="results/var_call/{sample}.vcf",ref="reference/ct_genome_consensus.fasta"
 	output:snps_vcf="results/var_call/snps/{sample}.snps.vcf"
@@ -41,9 +41,9 @@ rule select_snps:
 		gatk SelectVariants -R {input.ref} -V {input.merged} --select-type-to-include SNP -O {output.snps_vcf} 
 		"""
 
-#########################################
-#############  select indels- gatk
-###############################################
+######################################################
+### select only indels from the vcf file using  gatk
+######################################################
 rule select_indel:
 	input:indel="results/var_call/{sample}.vcf",ref="reference/ct_genome_consensus.fasta"
 	output:indel_vcf="results/var_call/indels/{sample}.indel.vcf"
@@ -57,9 +57,9 @@ rule select_indel:
 
 
 
-#########################################
-#############  filter snps- gatk
-###############################################
+###################################################################
+### filter snps based on mapping quality and read depth using gatk
+###################################################################
 rule filter_snps:
 	input:filter_snps="results/var_call/snps/{sample}.snps.vcf"
 	output:filtered_vcf="results/var_call/filtered/{sample}.filtered.snps.vcf"
@@ -72,9 +72,9 @@ rule filter_snps:
 		"""
 
 
-################################################
-############## filter indels- gatk
-################################################
+####################################################################
+### filter indels based on mapping quality and read depth using gatk
+####################################################################
 rule filter_indel:
 	input:filter_indel="results/var_call/indels/{sample}.indel.vcf"
 	output:filtered_indel="results/var_call/filtered/{sample}.filtered.indels.vcf"

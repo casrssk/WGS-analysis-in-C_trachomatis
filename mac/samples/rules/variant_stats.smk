@@ -1,6 +1,6 @@
-#######################################
-##### edit vcf file
-########################################
+###################################################
+### edit vcf file to align with the snpEff database
+###################################################
 rule vcf_edit:
 	input:"results/var_call/filtered/{sample}.filtered.snps.vcf"
 	output:"results/var_call/filtered/{sample}.edit.snps.vcf"
@@ -11,9 +11,9 @@ rule vcf_edit:
 		cat {input} | sed -e "s/^NC_000117.1/Chromosome/g" -e "s/^ct_genome/Chromosome/g"  > {output}
 		"""
 
-#########################################
-###########  annotate snps
-#############################################
+#################################
+### annotating snps with snpEff
+#################################
 rule snp_eff:
 	input:"results/var_call/filtered/{sample}.edit.snps.vcf"
 	output:calls="results/snpeff/{sample}.snps.annotate.vcf", stats="results/snpeff/{sample}.snps.html", csvstats="results/snpeff/{sample}.snps.csv"
@@ -24,10 +24,9 @@ rule snp_eff:
 		"""
 		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
-
-#######################################
-###### edit vcf file for indels
-#########################################
+########################################
+### edit vcf file for indels for snpEff
+########################################
 rule edit_indel_vcf:
 	input:"results/var_call/filtered/{sample}.filtered.indels.vcf"
 	output:"results/var_call/filtered/{sample}.edit.indels.vcf"
@@ -39,9 +38,9 @@ rule edit_indel_vcf:
 		"""
 
 
-#########################################
-############  annotate indels
-##############################################
+##################################
+### annotating indels with snpEff
+##################################
 rule indel_eff:
 	input:"results/var_call/filtered/{sample}.edit.indels.vcf"
 	output:calls="results/snpeff/{sample}.indels.annotate.vcf", stats="results/snpeff/{sample}.indels.html", csvstats="results/snpeff/{sample}.indels.csv"
@@ -53,9 +52,9 @@ rule indel_eff:
 		java -Xmx4g -jar 4.3u/snpEff/snpEff.jar -c 4.3u/snpEff/snpEff.config  {params.reference} -s {output.stats} -csvStats {output.csvstats} {input} > {output.calls}
 		"""
 															
-######################################
-##vcf-to-tsv for snps
-#####################################
+###################################
+### converting vcf-to-tsv for snps
+###################################
 rule snps_vcf_to_tsv:
 	input:"results/snpeff/{sample}.snps.annotate.vcf"
 	output:"results/var_call/filtered/{sample}.snps.table"
@@ -67,7 +66,7 @@ rule snps_vcf_to_tsv:
 		"""
 
 ######################################
-###vcf-to-tsv for indels
+### converting vcf-to-tsv for indels
 ######################################
 rule indels_vcf_to_tsv:
 	input:"results/snpeff/{sample}.indels.annotate.vcf"
@@ -81,9 +80,9 @@ rule indels_vcf_to_tsv:
 
 
 
-#########################################
-###### multi qc
-#########################################
+##########################################
+### generatin the multi qc for all samples
+##########################################
 rule multi_qc:
 	input:expand("results/snpeff/{sample}.indels.csv", sample=SAMPLES),
               expand("results/snpeff/{sample}.snps.csv", sample=SAMPLES),
