@@ -1,0 +1,5 @@
+Building DAG of jobs...
+MissingInputException in line 4 of /Users/satwantkaur/WGS-analysis-in-C_trachomatis/linux/sample/rules/pre_processing.smk:
+Missing input files for rule fastqc1:
+results/ct_fastq/191112_19-10127_CTD_2-Capt_S34_L000_1.fastq
+results/ct_fastq/191112_19-10127_CTD_2-Capt_S34_L000_2.fastq

@@ -18,7 +18,7 @@ import pandas as pd
 
 configfile: "config.yaml"
 wdir = config["working_dir"]
-SAMPLES, = glob_wildcards(wdir + "results/normalized/{sample}.norm_1.fastq.gz")
+SAMPLES, = glob_wildcards(wdir + "results/normalized/{sample}.norm_1.fastq")
 
 ######### Target rules ###########
 

@@ -1,0 +1,293 @@
+Building DAG of jobs...
+Using shell: /bin/bash
+Provided cores: 2
+Rules claiming more threads will be scaled down.
+Conda environments: ignored
+Job counts:
+	count	jobs
+	1	addorreplacgroups
+	1	all
+	1	edit_indel_vcf
+	1	fastqc1
+	1	fastqc2
+	1	filter_indel
+	1	filter_snps
+	1	indel_eff
+	1	indels_vcf_to_tsv
+	1	map_reads
+	1	mapping_ct
+	1	mark_duplicates
+	1	multi_qc
+	1	samtools_index
+	1	select_indel
+	1	select_snps
+	1	snp_eff
+	1	snps_vcf_to_tsv
+	1	sorting_reads
+	1	validate_bam
+	1	variant_calling
+	1	vcf_edit
+	22
+
+[Sat Sep 12 23:26:02 2020]
+rule fastqc1:
+    input: results/ct_fastq/191112_19-10127_CTD_2-Capt_S34_L000_1.fastq, results/ct_fastq/191112_19-10127_CTD_2-Capt_S34_L000_2.fastq
+    output: results/fastqc1/191112_19-10127_CTD_2-Capt_S34_L000_1_fastqc.html, results/fastqc1/191112_19-10127_CTD_2-Capt_S34_L000_2_fastqc.html
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_fastqc1.log
+    jobid: 10
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+    threads: 2
+
+[Sat Sep 12 23:27:24 2020]
+Finished job 10.
+1 of 22 steps (5%) done
+
+[Sat Sep 12 23:27:24 2020]
+rule mapping_ct:
+    input: results/normalized/191112_19-10127_CTD_2-Capt_S34_L000.norm_1.fastq, results/normalized/191112_19-10127_CTD_2-Capt_S34_L000.norm_2.fastq
+    output: results/mapping/191112_19-10127_CTD_2-Capt_S34_L000.bam
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_ct_bowtie2.log
+    jobid: 21
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+    threads: 2
+
+[Sat Sep 12 23:30:16 2020]
+Finished job 21.
+2 of 22 steps (9%) done
+
+[Sat Sep 12 23:30:16 2020]
+rule fastqc2:
+    input: results/normalized/191112_19-10127_CTD_2-Capt_S34_L000.norm_1.fastq, results/normalized/191112_19-10127_CTD_2-Capt_S34_L000.norm_2.fastq
+    output: results/fastqc2/191112_19-10127_CTD_2-Capt_S34_L000.norm_1_fastqc.html, results/fastqc2/191112_19-10127_CTD_2-Capt_S34_L000.norm_2_fastqc.html
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_fastqc2.log
+    jobid: 9
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+    threads: 2
+
+[Sat Sep 12 23:30:28 2020]
+Finished job 9.
+3 of 22 steps (14%) done
+
+[Sat Sep 12 23:30:28 2020]
+rule map_reads:
+    input: results/mapping/191112_19-10127_CTD_2-Capt_S34_L000.bam
+    output: results/mapping/191112_19-10127_CTD_2-Capt_S34_L000.mapped.bam
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_mapped.log
+    jobid: 18
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:30:34 2020]
+Finished job 18.
+4 of 22 steps (18%) done
+
+[Sat Sep 12 23:30:34 2020]
+rule sorting_reads:
+    input: results/mapping/191112_19-10127_CTD_2-Capt_S34_L000.mapped.bam
+    output: results/mapping/sort/191112_19-10127_CTD_2-Capt_S34_L000.sorted.bam
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_sorted.log
+    jobid: 14
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:30:50 2020]
+Finished job 14.
+5 of 22 steps (23%) done
+
+[Sat Sep 12 23:30:50 2020]
+rule mark_duplicates:
+    input: results/mapping/sort/191112_19-10127_CTD_2-Capt_S34_L000.sorted.bam
+    output: results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000.dedup.bam, results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000.metrics.txt
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_ct_dedup.log
+    jobid: 8
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:31:07 2020]
+Finished job 8.
+6 of 22 steps (27%) done
+
+[Sat Sep 12 23:31:07 2020]
+rule validate_bam:
+    input: results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000.dedup.bam
+    output: results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000_stats/qualimapReport.html
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_bam_stats.log
+    jobid: 7
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+
+[Sat Sep 12 23:31:07 2020]
+rule addorreplacgroups:
+    input: results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000.dedup.bam
+    output: results/mapping/addrg/191112_19-10127_CTD_2-Capt_S34_L000.addrg.bam
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_ct_dedup_addrg.log
+    jobid: 11
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:31:26 2020]
+Finished job 7.
+7 of 22 steps (32%) done
+[Sat Sep 12 23:31:29 2020]
+Finished job 11.
+8 of 22 steps (36%) done
+
+[Sat Sep 12 23:31:29 2020]
+rule variant_calling:
+    input: results/mapping/addrg/191112_19-10127_CTD_2-Capt_S34_L000.addrg.bam, reference/ct_genome_consensus.fasta
+    output: results/var_call/191112_19-10127_CTD_2-Capt_S34_L000.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_vcf.log
+    jobid: 22
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+
+[Sat Sep 12 23:31:29 2020]
+rule samtools_index:
+    input: results/mapping/addrg/191112_19-10127_CTD_2-Capt_S34_L000.addrg.bam
+    output: results/mapping/addrg/191112_19-10127_CTD_2-Capt_S34_L000.addrg.bam.bai
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_ct_dedup_bai.log
+    jobid: 4
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+    priority: 50
+
+[Sat Sep 12 23:31:29 2020]
+Finished job 4.
+9 of 22 steps (41%) done
+[Sat Sep 12 23:32:10 2020]
+Finished job 22.
+10 of 22 steps (45%) done
+
+[Sat Sep 12 23:32:10 2020]
+rule select_snps:
+    input: results/var_call/191112_19-10127_CTD_2-Capt_S34_L000.vcf, reference/ct_genome_consensus.fasta
+    output: results/var_call/snps/191112_19-10127_CTD_2-Capt_S34_L000.snps.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_snps.log
+    jobid: 20
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+
+[Sat Sep 12 23:32:10 2020]
+rule select_indel:
+    input: results/var_call/191112_19-10127_CTD_2-Capt_S34_L000.vcf, reference/ct_genome_consensus.fasta
+    output: results/var_call/indels/191112_19-10127_CTD_2-Capt_S34_L000.indel.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_indel.log
+    jobid: 19
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 19.
+11 of 22 steps (50%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule filter_indel:
+    input: results/var_call/indels/191112_19-10127_CTD_2-Capt_S34_L000.indel.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.filtered.indels.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_filtered_indels.log
+    jobid: 16
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 20.
+12 of 22 steps (55%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule filter_snps:
+    input: results/var_call/snps/191112_19-10127_CTD_2-Capt_S34_L000.snps.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.filtered.snps.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_filtered.log
+    jobid: 17
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 16.
+13 of 22 steps (59%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule edit_indel_vcf:
+    input: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.filtered.indels.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.edit.indels.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_edit_indels.log
+    jobid: 12
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 12.
+14 of 22 steps (64%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule indel_eff:
+    input: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.edit.indels.vcf
+    output: results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.indels.annotate.vcf, results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.indels.html, results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.indels.csv
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_indels_annotation.log
+    jobid: 5
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 17.
+15 of 22 steps (68%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule vcf_edit:
+    input: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.filtered.snps.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.edit.snps.vcf
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_edit_snps.log
+    jobid: 13
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:15 2020]
+Finished job 13.
+16 of 22 steps (73%) done
+
+[Sat Sep 12 23:32:15 2020]
+rule snp_eff:
+    input: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.edit.snps.vcf
+    output: results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.snps.annotate.vcf, results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.snps.html, results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.snps.csv
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_snps_annotation.log
+    jobid: 6
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:23 2020]
+Finished job 6.
+17 of 22 steps (77%) done
+
+[Sat Sep 12 23:32:23 2020]
+rule snps_vcf_to_tsv:
+    input: results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.snps.annotate.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.snps.table
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_snps_table.log
+    jobid: 2
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:24 2020]
+Finished job 5.
+18 of 22 steps (82%) done
+
+[Sat Sep 12 23:32:24 2020]
+rule multi_qc:
+    input: results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.indels.csv, results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.snps.csv, results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000_stats/qualimapReport.html, results/mapping/dedup/191112_19-10127_CTD_2-Capt_S34_L000.metrics.txt, results/fastqc2/191112_19-10127_CTD_2-Capt_S34_L000.norm_1_fastqc.html, results/fastqc1/191112_19-10127_CTD_2-Capt_S34_L000_1_fastqc.html
+    output: results/multiqc/multiqc_report.html
+    log: logs/multi_qc
+    jobid: 1
+
+[Sat Sep 12 23:32:28 2020]
+Finished job 2.
+19 of 22 steps (86%) done
+
+[Sat Sep 12 23:32:28 2020]
+rule indels_vcf_to_tsv:
+    input: results/snpeff/191112_19-10127_CTD_2-Capt_S34_L000.indels.annotate.vcf
+    output: results/var_call/filtered/191112_19-10127_CTD_2-Capt_S34_L000.indels.table
+    log: logs/191112_19-10127_CTD_2-Capt_S34_L000_indel_table.log
+    jobid: 3
+    wildcards: sample=191112_19-10127_CTD_2-Capt_S34_L000
+
+[Sat Sep 12 23:32:31 2020]
+Finished job 1.
+20 of 22 steps (91%) done
+[Sat Sep 12 23:32:32 2020]
+Finished job 3.
+21 of 22 steps (95%) done
+
+[Sat Sep 12 23:32:32 2020]
+Job 0: --- Pipeline complete
+
+[Sat Sep 12 23:32:32 2020]
+Finished job 0.
+22 of 22 steps (100%) done
+Complete log: /Users/satwantkaur/WGS-analysis-in-C_trachomatis/linux/sample/.snakemake/log/2020-09-12T232602.435201.snakemake.log

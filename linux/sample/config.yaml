@@ -1,4 +1,4 @@
-working_dir: "../linux/sample/"
+working_dir: "/Users/satwantkaur/WGS-analysis-in-C_trachomatis/linux/sample/"
 
 Duplicates: "REMOVE_DUPLICATES=true"
 
